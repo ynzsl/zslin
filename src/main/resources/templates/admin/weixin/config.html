@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorator="fragments/adminModel">
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<script type="text/javascript" src="/admin/business/weixin-config.js"></script>
+	<title>微信配置管理</title>
+		<script type="text/javascript">
+			$(document).ready(
+				function () {
+					$("#getAccessToken").click(function () {
+						$.post("/admin/weixin/getAccessToken",{},function (e) {
+							if(e="success"){
+								window.location.reload();
+							};
+						});
+					});
+				}
+			)
+		</script>
+	</head>
+	<body>
+		<div th:fragment="content" th:remove="tag">
+			<div class="header lighter smaller blue">
+				<h3><span class="glyphicon glyphicon-th-list"></span><i class="icon-setting"></i>&nbsp;微信配置管理<small>&nbsp;</small>
+					<a href="javascript:void(0)" style="float:right;" class="btn btn-info modify-all">修改全部</a>
+				</h3>
+			</div>
+
+			<form method="POST" th:object="${weixinConfig}">
+				<div class="form-group form-group-lg">
+					<div class="input-group">
+					  <div class="input-group-addon">appID：</div>
+					  <input name="appID" type="text" class="form-control need-hide" th:value="${weixinConfig.appID}" placeholder="请输入appID" />
+					</div>
+				</div>
+				<div class="form-group form-group-lg">
+					<div class="input-group">
+						<div class="input-group-addon">appsecret：</div>
+						<input name="appsecret" type="text" class="form-control need-hide" th:value="${weixinConfig.appsecret}" placeholder="请输入appsecret" />
+					</div>
+				</div>
+				<div class="form-group form-group-lg">
+					<div class="input-group">
+						<div class="input-group-addon">Token：</div>
+						<input name="Token" type="text" class="form-control need-hide" th:value="${weixinConfig.Token}" placeholder="请输入Token" />
+					</div>
+				</div>
+				<div class="form-group form-group-lg">
+					<div class="input-group">
+						<div class="input-group-addon">AesKey：</div>
+						<input name="aesKey" type="text" class="form-control need-hide" th:value="${weixinConfig.aesKey}" placeholder="请输入AesKey" />
+					</div>
+				</div>
+				<div class="form-group form-group-lg">
+					<div class="input-group">
+						<div class="input-group-addon">事件模板Id：</div>
+						<input name="eventTempId" type="text" class="form-control need-hide" th:value="${weixinConfig.eventTempId}" placeholder="请输入事件模板ID" />
+					</div>
+				</div>
+
+				<div class="form-group form-group-lg">
+					<div class="input-group">
+						<div class="input-group-addon">关注提示：</div>
+						<textarea class="form-control" style="height:180px;" name="hello" th:text="${weixinConfig.hello}" placeholder="请输入用户关注时的消息提示内容"></textarea>
+					</div>
+				</div>
+				<button type="submit" class="btn btn-primary submit-update-btn">保存设置</button>
+				<!--<th:block th:if="${flag==true}">
+					<button id="getAccessToken"  class="btn btn-primary">启动token定时器</button>
+				</th:block>-->
+			</form>
+		</div>
+	</body>
+</html>

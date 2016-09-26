@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorator="fragments/adminModel">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<script type="text/javascript" src="/validate/bootstrapValidator.js"></script>
+	<link type="text/css" rel="stylesheet" href="/js-lib/jquery-labelauty.css"/>
+	<script type="text/javascript" src="/js-lib/jquery-labelauty.js"></script>
+	<title>修改微信菜单</title>
+	<script type="text/javascript">
+		$(function() {
+			$(':input').labelauty();
+		});
+	</script>
+</head>
+<body>
+<div th:fragment="content" th:remove="tag">
+	<div class="header lighter smaller blue">
+		<h3><i class="icon-plus"></i>&nbsp;修改微信菜单 </h3>
+		<div th:replace="admin/weixin/menuNav :: content" th:remove="tag"></div>
+	</div>
+
+	<form method="POST" th:object="${weixinMenu}" id="dataForm">
+		<input type="hidden" name="pid" th:value="${pid}" />
+		<div class="form-group form-group-lg">
+			<div class="input-group input-group-lg">
+				<div class="input-group-addon">菜单名称</div>
+				<input type="text" name="name" th:value="${weixinMenu.name}" class="form-control" id="menu" placeholder="请输入菜单名称"/>
+			</div>
+		</div>
+		<div class="form-group form-group-lg">
+			<div class="input-group input-group-lg">
+				<div class="input-group-addon">菜单地址</div>
+				<input type="text" name="url" th:value="${weixinMenu.url}" class="form-control" id="url" placeholder="请输入菜单url"/>
+			</div>
+		</div>
+		<div class="form-group form-group-lg">
+			<div class="input-group input-group-lg">
+				<div class="input-group-addon">按钮类型</div>
+				<div class="form-control">
+					<input type="radio" name="type" value="click"  th:checked="${weixinMenu.type == 'click'}?'checked'" data-labelauty="click"/>
+					<input type="radio" name="type" value="view" th:checked="${weixinMenu.type == 'view'}?'checked'" data-labelauty="view"/>
+				</div>
+			</div>
+		</div>
+		<input type="hidden" name="token" th:value="${session.token}"/>
+		<button type="submit" class="btn btn-primary">确定提交</button>
+		<button type="button" onclick="javascript:history.back(-1)" class="btn btn-default">返回上级</button>
+	</form>
+	<script type="text/javascript">
+		jQuery(function($) {
+			$('#dataForm').bootstrapValidator({
+				//		        live: 'disabled',
+				message: '验证不通过',
+				feedbackIcons: {
+					valid: 'glyphicon glyphicon-ok',
+					invalid: 'glyphicon glyphicon-remove',
+					validating: 'glyphicon glyphicon-refresh'
+				},
+				fields: {
+					name: {
+						validators: {
+							notEmpty: {
+								message: '请输入菜单名称'
+							}
+						}
+					},
+					url: {
+						validators: {
+							notEmpty: {
+								message: '请输入url地址'
+							}
+						}
+					}
+				}
+			});
+		});
+	</script>
+</div>
+</body>
+</html>
