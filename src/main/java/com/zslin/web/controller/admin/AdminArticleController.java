@@ -4,6 +4,7 @@ import com.zslin.app.model.Article;
 import com.zslin.app.model.Category;
 import com.zslin.app.service.IArticleService;
 import com.zslin.app.service.ICategoryService;
+import com.zslin.app.tools.HtmlRegexpTools;
 import com.zslin.basic.auth.annotations.AdminAuth;
 import com.zslin.basic.auth.annotations.Token;
 import com.zslin.basic.auth.tools.TokenTools;
@@ -41,29 +42,31 @@ public class AdminArticleController {
     public String list(Model model, Integer page, HttpServletRequest request) {
         Page<Article> datas = articleService.findAll(new ParamFilterTools<Article>().buildSpecification(model, request), PageableTools.basicPage(page));
         model.addAttribute("datas", datas);
-        model.addAttribute("cateList", categoryService.findAll());
         return "admin/article/list";
     }
 
     @Token(flag=Token.READY)
     @AdminAuth(name = "添加文章", orderNum = 2, icon="icon-plus")
     @RequestMapping(value="add", method=RequestMethod.GET)
-    public String add(Model model, Integer cateId, HttpServletRequest request) {
-        model.addAttribute("category", cateId==null||cateId<=0?null:categoryService.findOne(cateId));
+    public String add(Model model, HttpServletRequest request) {
         Article article = new Article();
         article.setIsShow(1);
         model.addAttribute("article", article);
+        model.addAttribute("cateList", categoryService.findAll());
         return "admin/article/add";
     }
 
     /** 添加POST */
     @Token(flag=Token.CHECK)
     @RequestMapping(value="add", method=RequestMethod.POST)
-    public String add(Model model, Integer cateId, Article article, HttpServletRequest request) {
+    public String add(Model model, Article article, HttpServletRequest request) {
         if(TokenTools.isNoRepeat(request)) {
-            Category category = categoryService.findOne(cateId);
-            article.setCateId(cateId);
-            article.setCateName(category==null?null:category.getName());
+            if(article.getGuide()==null || "".equals(article.getGuide().trim())) {
+                String guide = HtmlRegexpTools.filterHtml(article.getContent());
+                if(guide.length()>200) {guide = guide.replace("[TOCM]","").replace("[TOC]", "").substring(0, 200) + "……";}
+                article.setGuide(guide);
+            }
+            article.setReadCount(0);
             articleService.save(article);
         }
         return "redirect:/admin/article/list";
@@ -74,6 +77,7 @@ public class AdminArticleController {
     @RequestMapping(value="update/{id}", method=RequestMethod.GET)
     public String update(Model model, @PathVariable Integer id, HttpServletRequest request) {
         model.addAttribute("article", articleService.findOne(id));
+        model.addAttribute("cateList", categoryService.findAll());
         return "admin/article/update";
     }
 
@@ -82,7 +86,12 @@ public class AdminArticleController {
     public String update(Model model, @PathVariable Integer id, Article article, HttpServletRequest request) {
         if(TokenTools.isNoRepeat(request)) {
             Article art = articleService.findOne(id);
-            MyBeanUtils.copyProperties(article, art, new String[]{"id", "cateId", "cateName"});
+            MyBeanUtils.copyProperties(article, art, new String[]{"id"});
+            if(art.getGuide()==null || "".equals(art.getGuide().trim())) {
+                String guide = HtmlRegexpTools.filterHtml(art.getContent());
+                if(guide.length()>200) {guide = guide.replace("[TOCM]","").replace("[TOC]", "").substring(0, 200) + "……";}
+                art.setGuide(guide);
+            }
             articleService.save(art);
         }
         return "redirect:/admin/article/list";
