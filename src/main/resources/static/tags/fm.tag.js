@@ -266,7 +266,9 @@
 					// remove button
 					var button_remove_element = document.createElement('div');
 					$(button_remove_element).data('text', value);
-					$(button_remove_element).addClass(plugin.settings.prefix + 'tag_remove');
+//					$(button_remove_element).addClass(plugin.settings.prefix + 'tag_remove');
+                    $(button_remove_element).css({"margin-right":"-20px", "margin-left":"5px"});
+					$(button_remove_element).addClass('fa fa-remove');
 					$(button_remove_element).bind('mousedown', function (e) {
 						e.preventDefault();
 						e.stopPropagation();
@@ -277,7 +279,8 @@
 						removeTag($(this).data('text'));
 						$(element).trigger('change');
 					});
-					$(button_remove_element).html('X');
+//					$(button_remove_element).html(' X ');
+					$(button_remove_element).html('');
 					$(tag_element).append(button_remove_element);
 					// clear
 					var clear_element = document.createElement('div');

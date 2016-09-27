@@ -43,7 +43,7 @@ $(function() {
             showDialog("请认真输入文章内容！"); return false;
         }
 
-        alert(myEditormd.getValue());
+//        alert(myEditormd.getValue());
 
         $("textarea[name='content']").text(content);
         $("textarea[name='mdContent']").text(mdCon);

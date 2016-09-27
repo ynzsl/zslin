@@ -34,7 +34,7 @@ public class AdminCategoryController {
     @AdminAuth(name = "分类列表", orderNum = 1, icon="icon-list")
     @RequestMapping(value="list", method= RequestMethod.GET)
     public String list(Model model, Integer page, HttpServletRequest request) {
-        Page<Category> datas = categoryService.findAll(new ParamFilterTools<Category>().buildSpecification(model, request), PageableTools.basicPage(page));
+        Page<Category> datas = categoryService.findAll(new ParamFilterTools<Category>().buildSpecification(model, request), PageableTools.basicPage(page, "asc", "orderNo"));
         model.addAttribute("datas", datas);
         return "admin/category/list";
     }

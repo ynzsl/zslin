@@ -76,8 +76,8 @@
 				<input type="hidden" name="token" th:value="${session.token}"/>
 				<input type="hidden" name="cateId" th:value="${article.cateId}"/>
 				<input type="hidden" name="cateName" th:value="${article.cateName}"/>
-				<textarea style="display:none" name="content"></textarea>
-				<textarea style="display:none" name="mdContent"></textarea>
+				<textarea style="display:none" name="content" th:text="${article.content}"></textarea>
+				<textarea style="display:none" name="mdContent" th:text="${article.mdContent}"></textarea>
 				<button type="submit" class="btn btn-primary">确定提交</button>
 				<button type="button" onclick="javascript:history.back(-1)" class="btn btn-default">返回上级</button>
 			</form>

@@ -18,4 +18,10 @@ public class NormalTest {
         String res = HtmlRegexpTools.filterHtml(str);
         System.out.println(str);
     }
+
+    @Test
+    public void test2() {
+        String str = "这里是头\\n二级目录第二个一级目录第二个的二级目录";
+        System.out.println(str.replace("[TOCM]", ""));
+    }
 }

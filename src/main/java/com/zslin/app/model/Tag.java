@@ -1,8 +1,6 @@
 package com.zslin.app.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Created by zsl-pc on 2016/9/27.
@@ -12,6 +10,7 @@ import javax.persistence.Table;
 public class Tag {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     /** 名称 */

@@ -2,8 +2,10 @@ package com.zslin.web.controller.admin;
 
 import com.zslin.app.model.Article;
 import com.zslin.app.model.Category;
+import com.zslin.app.model.Tag;
 import com.zslin.app.service.IArticleService;
 import com.zslin.app.service.ICategoryService;
+import com.zslin.app.service.ITagService;
 import com.zslin.app.tools.HtmlRegexpTools;
 import com.zslin.basic.auth.annotations.AdminAuth;
 import com.zslin.basic.auth.annotations.Token;
@@ -36,6 +38,9 @@ public class AdminArticleController {
     @Autowired
     private ICategoryService categoryService;
 
+    @Autowired
+    private ITagService tagService;
+
     /** 列表 */
     @AdminAuth(name = "文章列表", orderNum = 1, icon="icon-list")
     @RequestMapping(value="list", method= RequestMethod.GET)
@@ -62,14 +67,29 @@ public class AdminArticleController {
     public String add(Model model, Article article, HttpServletRequest request) {
         if(TokenTools.isNoRepeat(request)) {
             if(article.getGuide()==null || "".equals(article.getGuide().trim())) {
-                String guide = HtmlRegexpTools.filterHtml(article.getContent());
-                if(guide.length()>200) {guide = guide.replace("[TOCM]","").replace("[TOC]", "").substring(0, 200) + "……";}
+                String guide = HtmlRegexpTools.filterHtml(article.getContent()).replace("[TOCM]","").replace("[TOC]", "");
+                if(guide.length()>200) {guide = guide.substring(0, 200) + "……";}
                 article.setGuide(guide);
             }
             article.setReadCount(0);
+            addOrUpdateTags(article.getTags());
             articleService.save(article);
         }
         return "redirect:/admin/article/list";
+    }
+
+    private void addOrUpdateTags(String tags) {
+        String [] tagArray = tags.split(",");
+        for(String tag : tagArray) {
+            if(tag==null || "".equals(tag.trim())) {continue;}
+            System.out.println("======"+tag);
+            Tag t = tagService.findByName(tag);
+            if(t==null) {
+                t = new Tag();
+                t.setName(tag);
+                tagService.save(t);
+            }
+        }
     }
 
     @Token(flag=Token.READY)
@@ -86,13 +106,16 @@ public class AdminArticleController {
     public String update(Model model, @PathVariable Integer id, Article article, HttpServletRequest request) {
         if(TokenTools.isNoRepeat(request)) {
             Article art = articleService.findOne(id);
-            MyBeanUtils.copyProperties(article, art, new String[]{"id"});
+            MyBeanUtils.copyProperties(article, art, new String[]{"id","readCount", "createDate"});
             if(art.getGuide()==null || "".equals(art.getGuide().trim())) {
-                String guide = HtmlRegexpTools.filterHtml(art.getContent());
-                if(guide.length()>200) {guide = guide.replace("[TOCM]","").replace("[TOC]", "").substring(0, 200) + "……";}
+                String guide = HtmlRegexpTools.filterHtml(art.getContent()).replace("[TOCM]","").replace("[TOC]", "");
+                if(guide.length()>200) {guide = guide.substring(0, 200) + "……";}
+                guide = guide.replaceAll("\n", "&nbsp;&nbsp;");
+                System.out.println(guide);
                 art.setGuide(guide);
             }
             articleService.save(art);
+            addOrUpdateTags(art.getTags());
         }
         return "redirect:/admin/article/list";
     }
