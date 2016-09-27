@@ -46,22 +46,22 @@ public class MenuServiceImpl {
         List<Menu> menuList = menuService.findByUser(userId);
         for(Menu m : menuList) {
             if(m.getPsn()==null || "root".equalsIgnoreCase(m.getPsn())) { //说明是一级菜单
-                PMenuDto ppmDto = new PMenuDto(m.getId(), m, new ArrayList<MenuDto>());
+                PMenuDto ppmDto = new PMenuDto(m.getId(), m, new ArrayList<>());
                 if(!res.contains(ppmDto)) {res.add(ppmDto);}
             } else if(!"root".equalsIgnoreCase(m.getPsn()) && m.getSn().indexOf(".")<0) { //说明是二级菜单
                 Menu pm = menuService.findBySn(m.getPsn());
-                PMenuDto ppmDto = new PMenuDto(pm.getId(), pm, new ArrayList<MenuDto>());
+                PMenuDto ppmDto = new PMenuDto(pm.getId(), pm, new ArrayList<>());
                 if(!res.contains(pm)) {
                     res.add(ppmDto);
                 }
-                res.get(res.indexOf(ppmDto)).getChildren().add(new MenuDto(m.getId(), m, new ArrayList<Menu>()));
+                res.get(res.indexOf(ppmDto)).getChildren().add(new MenuDto(m.getId(), m, new ArrayList<>()));
             } else if(m.getSn().indexOf(".")>0) { //说明是三级菜单
                 Menu pm = menuService.findBySn(m.getPsn()); //这是二级菜单
-                MenuDto pmDto = new MenuDto(pm.getId(), pm, new ArrayList<Menu>());
+                MenuDto pmDto = new MenuDto(pm.getId(), pm, new ArrayList<>());
                 Menu ppm = menuService.findBySn(pm.getPsn()); //这是一级菜单
-                PMenuDto ppmDto = new PMenuDto(ppm.getId(), ppm, new ArrayList<MenuDto>());
+                PMenuDto ppmDto = new PMenuDto(ppm.getId(), ppm, new ArrayList<>());
                 if(!res.contains(ppmDto)) { //如果不包含一级菜单
-                    res.add(new PMenuDto(ppm.getId(), ppm, new ArrayList<MenuDto>()));
+                    res.add(new PMenuDto(ppm.getId(), ppm, new ArrayList<>()));
                 }
                 if(!res.get(res.indexOf(ppmDto)).getChildren().contains(pmDto)) { //如果不包含二级菜单
                     res.get(res.indexOf(ppmDto)).getChildren().add(pmDto);
