@@ -1,7 +1,7 @@
 package com.zslin.web.controller.admin;
 
-import com.zslin.app.model.Category;
-import com.zslin.app.service.ICategoryService;
+import com.zslin.app.model.Notice;
+import com.zslin.app.service.INoticeService;
 import com.zslin.basic.auth.annotations.AdminAuth;
 import com.zslin.basic.auth.annotations.Token;
 import com.zslin.basic.auth.tools.TokenTools;
@@ -23,67 +23,70 @@ import javax.servlet.http.HttpServletRequest;
  * Created by zsl-pc on 2016/9/27.
  */
 @Controller
-@RequestMapping(value = "admin/category")
-@AdminAuth(name="分类管理", orderNum=2, psn="网站管理", pentity=0, porderNum=1)
-public class AdminCategoryController {
+@RequestMapping(value = "admin/notice")
+@AdminAuth(name="公告管理", orderNum=4, psn="网站管理", pentity=0, porderNum=1)
+public class AdminNoticeController {
 
     @Autowired
-    private ICategoryService categoryService;
+    private INoticeService noticeService;
 
     /** 列表 */
-    @AdminAuth(name = "分类列表", orderNum = 1, icon="icon-list")
+    @AdminAuth(name = "公告列表", orderNum = 1, icon="icon-list")
     @RequestMapping(value="list", method= RequestMethod.GET)
     public String list(Model model, Integer page, HttpServletRequest request) {
-        Page<Category> datas = categoryService.findAll(new ParamFilterTools<Category>().buildSpecification(model, request), PageableTools.basicPage(page, "asc", "orderNo"));
+        Page<Notice> datas = noticeService.findAll(new ParamFilterTools<Notice>().buildSpecification(model, request), PageableTools.basicPage(page, "asc", "orderNo"));
         model.addAttribute("datas", datas);
-        return "admin/category/list";
+        return "admin/notice/list";
     }
 
     @Token(flag=Token.READY)
-    @AdminAuth(name = "添加分类", orderNum = 2, icon="icon-plus")
+    @AdminAuth(name = "添加公告", orderNum = 2, icon="icon-plus")
     @RequestMapping(value="add", method=RequestMethod.GET)
     public String add(Model model, HttpServletRequest request) {
-        Category category = new Category();
-        category.setIsNav(0);
-        model.addAttribute("category", category);
-        return "admin/category/add";
+        Notice notice = new Notice();
+        notice.setIsShow(1);
+        model.addAttribute("notice", notice);
+        return "admin/notice/add";
     }
 
     /** 添加POST */
     @Token(flag=Token.CHECK)
     @RequestMapping(value="add", method=RequestMethod.POST)
-    public String add(Model model, Category category, HttpServletRequest request) {
+    public String add(Model model, Notice notice, HttpServletRequest request) {
         if(TokenTools.isNoRepeat(request)) {
-            categoryService.save(category);
+            Integer orderNo = noticeService.queryMaxOrderNo();
+            orderNo = orderNo==null||orderNo<=0?1:orderNo+1;
+            notice.setOrderNo(orderNo);
+            noticeService.save(notice);
         }
-        return "redirect:/admin/category/list";
+        return "redirect:/admin/notice/list";
     }
 
     @Token(flag=Token.READY)
-    @AdminAuth(name="修改分类", orderNum=3, type="2")
+    @AdminAuth(name="修改公告", orderNum=3, type="2")
     @RequestMapping(value="update/{id}", method=RequestMethod.GET)
     public String update(Model model, @PathVariable Integer id, HttpServletRequest request) {
-        model.addAttribute("category", categoryService.findOne(id));
-        return "admin/category/update";
+        model.addAttribute("notice", noticeService.findOne(id));
+        return "admin/notice/update";
     }
 
     @Token(flag=Token.CHECK)
     @RequestMapping(value="update/{id}", method=RequestMethod.POST)
-    public String update(Model model, @PathVariable Integer id, Category category, HttpServletRequest request) {
+    public String update(Model model, @PathVariable Integer id, Notice notice, HttpServletRequest request) {
         if(TokenTools.isNoRepeat(request)) {
-            Category c = categoryService.findOne(id);
-            MyBeanUtils.copyProperties(category, c, new String[]{"id", "orderNo"});
-            categoryService.save(c);
+            Notice n = noticeService.findOne(id);
+            MyBeanUtils.copyProperties(notice, n, new String[]{"id", "orderNo", "createDate"});
+            noticeService.save(n);
         }
-        return "redirect:/admin/category/list";
+        return "redirect:/admin/notice/list";
     }
 
-    @AdminAuth(name="删除分类", orderNum=4, type="2")
+    @AdminAuth(name="删除公告", orderNum=4, type="2")
     @RequestMapping(value="delete/{id}", method=RequestMethod.POST)
     public @ResponseBody
     String delete(@PathVariable Integer id) {
         try {
-            categoryService.delete(id);
+            noticeService.delete(id);
             return "1";
         } catch (Exception e) {
             return "0";
@@ -91,12 +94,12 @@ public class AdminCategoryController {
     }
 
     @RequestMapping("updateSort")
-    @AdminAuth(name="分类排序", orderNum=4, type="2")
+    @AdminAuth(name="公告排序", orderNum=4, type="2")
     public @ResponseBody String updateSort(Integer[] ids) {
         try {
             Integer index = 1;
             for(Integer id : ids) {
-                categoryService.updateOrderNo(id, index++);
+                noticeService.updateOrderNo(id, index++);
             }
         } catch (Exception e) {
             return "0";
