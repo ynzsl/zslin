@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 /**
  * Created by zsl-pc on 2016/9/27.
@@ -72,6 +73,7 @@ public class AdminArticleController {
                 article.setGuide(guide);
             }
             article.setReadCount(0);
+            article.setCreateDate(new Date());
             addOrUpdateTags(article.getTags());
             articleService.save(article);
         }

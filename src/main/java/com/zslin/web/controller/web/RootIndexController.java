@@ -19,7 +19,7 @@ public class RootIndexController {
     private IAppConfigService appConfigService;
 
     /** 网站首页 */
-    @RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"index", "index/"}, method = RequestMethod.GET)
     public String index(HttpServletRequest request) {
         AppConfig ac = (AppConfig) request.getSession().getAttribute("appConfig");
         if(ac==null) {

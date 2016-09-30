@@ -1,34 +1,41 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-CN"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="fragments/webModel">
 
-<head>
-    <title>Hello Spring Boot!</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-</head>
-<body>
-    <div th:replace="fragments/header :: header">
-        <div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="#">Static header</a>
+    <head>
+        <title th:text="${session.appConfig.appName}">网站首页</title>
+        <link rel="stylesheet" type="text/css" href="/web/article.css"/>
+    </head>
+    <body>
+        <div th:fragment="content">
+            <div class="col-md-3 col-sm-3 col-xs-3"></div>
+            <div class="col-md-6 col-sm-6 col-xs-6">
+                <div th:each="obj : ${datas}" class="single-article my-border container-fluid">
+                    <a class="title-href" th:href="'/web/article/detail/'+${obj.id}" th:text="${obj.title}"></a>
+                    <p class="info"><span th:text="${#dates.format(obj.createDate, '&nbsp;yyyy-MM-dd')}" class="fa fa-clock-o"> </span>
+                        <span class="fa fa-tasks" th:text="' '+${obj.cateName}"></span>
+                    </p>
+                    <p th:text="${obj.guide}" class="guide"></p>
+                    <p class="info">
+                        <span class="fa fa-tags" th:text="' '+${obj.tags}"></span>
+                    </p>
                 </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">Home</a></li>
-                    </ul>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-3">
+                <div th:each="obj : ${datas}" class="single-article my-border container-fluid">
+                    <a class="title-href" th:href="@{/web/article(id=${obj.id})}" th:text="${obj.title}"></a>
+                    <p class="info"><span th:text="${#dates.format(obj.createDate, '&nbsp;yyyy-MM-dd')}" class="fa fa-clock-o"> </span>
+                        <span class="fa fa-tasks" th:text="' '+${obj.cateName}"></span>
+                    </p>
+                    <p th:text="${obj.guide}" class="guide"></p>
+                    <p class="info">
+                        <span class="fa fa-tags" th:text="' '+${obj.tags}"></span>
+                    </p>
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="container">
-        <div class="alert alert-info">
-            ====+++++====
-        </div>
-    </div>
-
-    <footer>
-        <div th:replace="fragments/footer :: footer">&copy; 2016 blog.codeleak.pl</div>
-    </footer>
-</body>
+    </body>
 </html>
