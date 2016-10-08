@@ -1,6 +1,7 @@
 package com.zslin.web.controller.web;
 
 import com.zslin.app.model.Article;
+import com.zslin.app.service.IAboutService;
 import com.zslin.app.service.IArticleService;
 import com.zslin.basic.tools.BaseSpecification;
 import com.zslin.basic.tools.PageableTools;
@@ -23,15 +24,27 @@ public class WebController {
     @Autowired
     private IArticleService articleService;
 
+    @Autowired
+    private IAboutService aboutService;
+
     /** 网站首页 */
     @RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
-    public String index(Model model, Integer cateId, Integer page) {
+    public String index(Model model, Integer cateId, String tag, Integer page) {
         Specification<Article> spe = null;
         if(cateId!=null && cateId>0) {
             spe = Specifications.where(new BaseSpecification<>(new SearchCriteria("cateId", "eq", cateId)));
+        } else if(tag!=null && !"".equals(tag.trim())) {
+            spe = Specifications.where(new BaseSpecification<>(new SearchCriteria("tags", "like", tag)));
         }
         Page<Article> datas = articleService.findAll(spe, PageableTools.basicPage(page, "desc", "createDate"));
         model.addAttribute("datas", datas);
         return "web/index";
+    }
+
+    /** 关于 */
+    @RequestMapping(value = "about", method = RequestMethod.GET)
+    public String about(Model model) {
+        model.addAttribute("about", aboutService.findOne(1));
+        return "web/about";
     }
 }

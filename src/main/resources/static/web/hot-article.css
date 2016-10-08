@@ -1,0 +1,21 @@
+.hot-article h2 {
+    color:#444;
+}
+
+.hot-article ul {
+    float:left; width:100%; padding:0px;
+}
+.hot-article ul li {
+    float:left; width:100%; list-style:none; line-height:35px; color:#888;
+}
+
+.hot-article ul li a {
+    font-size:18px;
+}
+
+.hot-article ul li a i {
+    font-size:12px; font-weight:normal;
+}
+.hot-article ul li a span {
+    margin-left:-8px;
+}

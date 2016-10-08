@@ -51,6 +51,18 @@ public class Article {
     @Column(name = "is_show")
     private Integer isShow;
 
+    /** 图片路径 */
+    @Column(name = "pic_path")
+    private String picPath;
+
+    public String getPicPath() {
+        return picPath;
+    }
+
+    public void setPicPath(String picPath) {
+        this.picPath = picPath;
+    }
+
     public Integer getIsShow() {
         return isShow;
     }

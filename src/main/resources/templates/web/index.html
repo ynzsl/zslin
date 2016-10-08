@@ -8,33 +8,48 @@
     <head>
         <title th:text="${session.appConfig.appName}">网站首页</title>
         <link rel="stylesheet" type="text/css" href="/web/article.css"/>
+        <script type="text/javascript" src="/web/article.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="/web/cate.css"/>
+        <link rel="stylesheet" type="text/css" href="/web/tags.css"/>
+        <link rel="stylesheet" type="text/css" href="/web/hot-article.css"/>
+        <script type="text/javascript" src="/web/cate.js"></script>
+        <script type="text/javascript" src="/web/tags.js"></script>
+        <script type="text/javascript" src="/web/hot-article.js"></script>
+        <link rel="stylesheet" type="text/css" href="/web/notice.css"/>
+        <script type="text/javascript" src="/web/notice.js"></script>
+
+        <script type="text/javascript" src="/web/no-pic.js"></script>
     </head>
     <body>
         <div th:fragment="content">
-            <div class="col-md-3 col-sm-3 col-xs-3"></div>
-            <div class="col-md-6 col-sm-6 col-xs-6">
+            <div class="col-md-9 col-sm-9 col-xs-9">
                 <div th:each="obj : ${datas}" class="single-article my-border container-fluid">
-                    <a class="title-href" th:href="'/web/article/detail/'+${obj.id}" th:text="${obj.title}"></a>
-                    <p class="info"><span th:text="${#dates.format(obj.createDate, '&nbsp;yyyy-MM-dd')}" class="fa fa-clock-o"> </span>
-                        <span class="fa fa-tasks" th:text="' '+${obj.cateName}"></span>
-                    </p>
-                    <p th:text="${obj.guide}" class="guide"></p>
-                    <p class="info">
-                        <span class="fa fa-tags" th:text="' '+${obj.tags}"></span>
-                    </p>
+                    <div class="col-md-9">
+                        <a class="title-href" th:href="'/web/article/detail/'+${obj.id}" th:text="${obj.title}"></a>
+                        <p class="info"><span th:text="${#dates.format(obj.createDate, '&nbsp;yyyy-MM-dd')}" class="fa fa-clock-o"> </span>
+                            &nbsp;<span class="fa fa-eye" th:text="'&nbsp;'+${obj.readCount}"></span>
+                            <a th:href="@{/(cateId=${obj.cateId})}" class="fa fa-tasks" th:text="' '+${obj.cateName}"></a>
+                        </p>
+                        <p th:utext="${obj.guide}" class="guide"></p>
+                        <p class="info">
+                            <span class="fa fa-tags article-tags" th:text="' '+${obj.tags}"></span>
+                        </p>
+                    </div>
+                    <div class="col-md-3">
+                        <div th:if="${obj.picPath eq NULL || obj.picPath eq ''}" class="no-pic"></div>
+                        <div th:unless="${obj.picPath eq NULL || obj.picPath eq ''}" class="has-pic">
+                            <a th:href="'/web/article/detail/'+${obj.id}" th:title="${obj.title}" th:attr="picPath=${obj.picPath}"></a>
+                        </div>
+                    </div>
                 </div>
+                <div th:include="fragments/page :: pager" style="margin-top:18px; "></div>
             </div>
             <div class="col-md-3 col-sm-3 col-xs-3">
-                <div th:each="obj : ${datas}" class="single-article my-border container-fluid">
-                    <a class="title-href" th:href="@{/web/article(id=${obj.id})}" th:text="${obj.title}"></a>
-                    <p class="info"><span th:text="${#dates.format(obj.createDate, '&nbsp;yyyy-MM-dd')}" class="fa fa-clock-o"> </span>
-                        <span class="fa fa-tasks" th:text="' '+${obj.cateName}"></span>
-                    </p>
-                    <p th:text="${obj.guide}" class="guide"></p>
-                    <p class="info">
-                        <span class="fa fa-tags" th:text="' '+${obj.tags}"></span>
-                    </p>
-                </div>
+                <div class="container-fluid show-notice"></div>
+                <div class="container-fluid show-cate"></div>
+                <div class="container-fluid hot-article" showLength="10"></div>
+                <div class="container-fluid show-tags"></div>
             </div>
         </div>
     </body>

@@ -1,15 +1,28 @@
 .single-article {
     border-bottom:2px #00b32f solid; margin-top:25px; padding-bottom:8px; padding-top:18px;
 }
-.single-article a:link, .single-article a:visited {
+.single-article a.title-href:link, .single-article a.title-href:visited {
     color:#009688; font-size:36px; padding:12px 0px;
 }
-.single-article a:hover {
+.single-article a.title-href:hover {
     color:#38b7ea; text-decoration:none;
 }
-.single-article .info span {
+.info span {
     font-size:16px; margin-right:9px; padding:8px 0px; color:#555;
 }
 .single-article .guide {
     font-size:20px; color:#555; border-bottom:1px #f5f5f5 solid; padding-bottom:15px;
+}
+
+
+.about-art {
+    padding-bottom:22px;
+}
+
+.about-art a {
+    font-size:16px;
+}
+
+.about-art i {
+    font-size:22px; padding:0px 8px;
 }

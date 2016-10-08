@@ -1,14 +1,68 @@
 package com.zslin.web.controller.web;
 
-import org.springframework.stereotype.Controller;
+import com.zslin.app.dto.CateDto;
+import com.zslin.app.model.Article;
+import com.zslin.app.model.Notice;
+import com.zslin.app.model.Tag;
+import com.zslin.app.service.IAboutService;
+import com.zslin.app.service.IArticleService;
+import com.zslin.app.service.INoticeService;
+import com.zslin.app.service.ITagService;
+import com.zslin.basic.tools.BaseSpecification;
+import com.zslin.basic.tools.PageableTools;
+import com.zslin.basic.tools.SearchCriteria;
+import com.zslin.basic.tools.SortTools;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * 公共的Controller
  * Created by zsl-pc on 2016/9/13.
  */
-@Controller
+@RestController
 @RequestMapping(value = "public")
 public class PublicController {
 
+    @Autowired
+    private IArticleService articleService;
+
+    @Autowired
+    private ITagService tagService;
+
+    @Autowired
+    private INoticeService noticeService;
+
+    /** 获取标签 */
+    @RequestMapping(value = "listTags", method = RequestMethod.GET)
+    public List<Tag> listTags() {
+        return tagService.findAll();
+    }
+
+    /** 栏目列表 */
+    @RequestMapping(value = "listCates", method = RequestMethod.GET)
+    public List<CateDto> listCates() {
+        return articleService.queryCates();
+    }
+
+    /** 获取访问最最高的几条文章 */
+    @RequestMapping(value = "hotArt", method = RequestMethod.GET)
+    public Page<Article> hotArt(Integer length) {
+        length = (length ==null || length<=0)?10:length; //默认为10
+        Page<Article> artList = articleService.findAll(PageableTools.basicPage(0, length, "desc", "readCount"));
+        return artList;
+    }
+
+    /** 获取公告信息 */
+    @RequestMapping(value = "listNotice", method = RequestMethod.GET)
+    public List<Notice> listNotice() {
+        Specifications<Notice> pars = Specifications.where(new BaseSpecification<Notice>(new SearchCriteria("isShow", "eq", 1)));
+        List<Notice> res = noticeService.findAll(pars, SortTools.basicSort("asc", "orderNo"));
+        return res;
+    }
 }

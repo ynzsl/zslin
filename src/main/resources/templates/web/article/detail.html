@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="fragments/webModel">
+
+    <head>
+        <title th:text="${article.title}+' - '+${session.appConfig.appName}">文章详情</title>
+        <link rel="stylesheet" href="/editor.md-master/css/editormd.css" />
+        <link rel="stylesheet" href="/editor.md-master/css/editormd.preview.min.css" />
+        <link rel="stylesheet" href="/editor.md-master/css/editormd.logo.min.css" />
+
+        <script type="text/javascript" src="/editor.md-master/lib/marked.min.js"></script>
+        <script type="text/javascript" src="/editor.md-master/lib/prettify.min.js"></script>
+        <script type="text/javascript" src="/editor.md-master/lib/raphael.min.js"></script>
+        <script type="text/javascript" src="/editor.md-master/lib/underscore.min.js"></script>
+        <script type="text/javascript" src="/editor.md-master/lib/sequence-diagram.min.js"></script>
+        <script type="text/javascript" src="/editor.md-master/lib/flowchart.min.js"></script>
+        <script type="text/javascript" src="/editor.md-master/lib/jquery.flowchart.min.js"></script>
+
+        <script type="text/javascript" src="/editor.md-master/editormd.min.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="/web/article.css"/>
+        <script type="text/javascript" src="/web/article-detail.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="/web/cate.css"/>
+        <link rel="stylesheet" type="text/css" href="/web/tags.css"/>
+        <link rel="stylesheet" type="text/css" href="/web/hot-article.css"/>
+        <script type="text/javascript" src="/web/cate.js"></script>
+        <script type="text/javascript" src="/web/tags.js"></script>
+        <script type="text/javascript" src="/web/hot-article.js"></script>
+        <link rel="stylesheet" type="text/css" href="/web/notice.css"/>
+        <script type="text/javascript" src="/web/notice.js"></script>
+
+    </head>
+    <body>
+        <div th:fragment="content">
+            <div class="col-md-9 col-sm-9 col-xs-9">
+                <div class="my-border container-fluid">
+                    <textarea style="display:none" name="mdContent" th:text="${article.mdContent}"></textarea>
+                    <div class="page-header">
+                        <h1 th:text="${article.title}"></h1>
+                        <p class="info"><span th:text="${#dates.format(article.createDate, '&nbsp;yyyy-MM-dd')}" class="fa fa-clock-o"> </span>
+                            &nbsp;<span class="fa fa-eye" th:text="'&nbsp;'+${article.readCount}"></span>
+                            <a th:href="@{/(cateId=${article.cateId})}" class="fa fa-tasks" th:text="' '+${article.cateName}"></a>
+                        </p>
+                    </div>
+                    <div id="editormd-view">
+                        <textarea style="display:none;" th:text="${article.content}"></textarea>
+                    </div>
+                    <div class="row about-art">
+                        <div class="col-md-6">
+                            <a th:href="'/web/article/detail/'+${preArt.id}" th:if="${preArt ne null}" th:title="'上一篇：'+${preArt.title}"><i class="fa fa-caret-up" style="float:left;"></i> <span th:text="${preArt.title}"></span></a>
+                        </div>
+                        <div class="col-md-6" style="text-align:right; padding-right:35px;">
+                            <a th:href="'/web/article/detail/'+${nextArt.id}" th:if="${nextArt ne null}"  th:title="'下一篇：'+${nextArt.title}"><span th:text="${nextArt.title}"></span><i class="fa fa-caret-down"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-3">
+                <div class="container-fluid show-notice"></div>
+                <div class="container-fluid show-cate"></div>
+                <div class="container-fluid hot-article" showLength="10"></div>
+                <div class="container-fluid show-tags"></div>
+            </div>
+        </div>
+    </body>
+</html>

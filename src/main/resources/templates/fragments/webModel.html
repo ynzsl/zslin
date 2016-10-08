@@ -6,6 +6,7 @@
 
     <head th:fragment="head">
         <title th:text="${session.appConfig.appName}">名称</title>
+        <link rel="icon" type="image/x-icon" href="/favicon.png"/>
         <meta charset="utf-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
         <!-- 默认360 兼容模式 -->
@@ -36,11 +37,11 @@
     </head>
     <body>
         <div class="container-fluid" id="model-top-div">
-            <a href="/" class="index-href"><img src="/web/imgs/zslin-logo-2.png"/></a>
+            <a href="/" class="index-href"><img src="/web/imgs/zslin-logo-3.png"/></a>
             <ul class="model-top-ul">
-                <li><a href="">首页</a></li>
-                <li><a href="">最新文章</a></li>
-                <li><a href="">关于我</a></li>
+                <li><a href="/">知识林首页</a></li>
+                <!--<li><a href="">最新文章</a></li>-->
+                <li><a href="/about">关于我</a></li>
             </ul>
         </div>
 

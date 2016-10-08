@@ -22,11 +22,18 @@
 				<div th:replace="admin/article/nav :: content" th:remove="tag"></div>
 			</div>
 
-			<form method="POST" th:object="${article}" id="dataForm">
+			<form method="POST" th:object="${article}" id="dataForm" enctype="multipart/form-data">
 				<div class="form-group form-group-lg">
 					<div class="input-group">
 						<div class="input-group-addon">文章标题：</div>
 						<input name="title" type="text" class="form-control" th:value="${article.title}" placeholder="请输入文章标题" />
+					</div>
+				</div>
+
+				<div class="form-group form-group-lg">
+					<div class="input-group">
+						<div class="input-group-addon">文章图片：</div>
+						<input name="file" type="file" class="form-control" />
 					</div>
 				</div>
 
