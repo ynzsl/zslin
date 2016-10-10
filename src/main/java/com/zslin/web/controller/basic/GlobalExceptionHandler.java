@@ -16,7 +16,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = SystemException.class)
     public String systemExceptionHandler(Model model, HttpServletRequest req, SystemException e) {
-        ErrorInfo<String> er = new ErrorInfo<String>();
+        ErrorInfo<String> er = new ErrorInfo<>();
         er.setCode(ErrorInfo.ERROR);
         er.setMessage(e.getMessage());
         er.setUrl(req.getRequestURL().toString());
@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
     public String defaultExceptionHandler(Model model, HttpServletRequest req, Exception e) {
-        ErrorInfo<String> er = new ErrorInfo<String>();
+        ErrorInfo<String> er = new ErrorInfo<>();
         er.setCode(ErrorInfo.ERROR);
         er.setMessage(e.getMessage());
         er.setUrl(req.getRequestURL().toString());
