@@ -6,7 +6,9 @@ $(function() {
             html += '<ul class="cate-ul-list">';
             for(var i=0; i<res.length; i++) {
                 var obj = res[i];
-                html += '<li><a href="/?cateId='+obj.cateId+'"><i class="fa fa-caret-right"></i>'+obj.cateName+'</a>（'+obj.amount+'）</li>';
+                if(obj.cateId != undefined && obj.amount != undefined) {
+                    html += '<li><a href="/?cateId='+obj.cateId+'"><i class="fa fa-caret-right"></i>'+obj.cateName+'</a>（'+obj.amount+'）</li>';
+                }
             }
             html += '</ul>';
             $(thisObj).html(html);
