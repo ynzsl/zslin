@@ -14,10 +14,12 @@ public class About {
     private Integer id;
 
     /** 具体内容 */
+    @Lob
     private String content;
 
     /** Markdown内容  */
     @Column(name = "md_content")
+    @Lob
     private String mdContent;
 
     /** 浏览量 */
