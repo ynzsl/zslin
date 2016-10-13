@@ -7,22 +7,11 @@
 
     <head>
         <title th:text="${article.title}+' - '+${session.appConfig.appName}">文章详情</title>
-        <link rel="stylesheet" href="/editor.md-master/css/editormd.css" />
-        <link rel="stylesheet" href="/editor.md-master/css/editormd.preview.min.css" />
-        <link rel="stylesheet" href="/editor.md-master/css/editormd.logo.min.css" />
 
-        <script type="text/javascript" src="/editor.md-master/lib/marked.min.js"></script>
-        <script type="text/javascript" src="/editor.md-master/lib/prettify.min.js"></script>
-        <script type="text/javascript" src="/editor.md-master/lib/raphael.min.js"></script>
-        <script type="text/javascript" src="/editor.md-master/lib/underscore.min.js"></script>
-        <script type="text/javascript" src="/editor.md-master/lib/sequence-diagram.min.js"></script>
-        <script type="text/javascript" src="/editor.md-master/lib/flowchart.min.js"></script>
-        <script type="text/javascript" src="/editor.md-master/lib/jquery.flowchart.min.js"></script>
-
-        <script type="text/javascript" src="/editor.md-master/editormd.min.js"></script>
+        <meta name="description" th:content="${article.tags}+','+${session.appConfig.appName}" />
+        <meta name="keywords" th:content="${article.guide}" />
 
         <link rel="stylesheet" type="text/css" href="/web/article.css"/>
-        <script type="text/javascript" src="/web/article-detail.js"></script>
 
         <link rel="stylesheet" type="text/css" href="/web/cate.css"/>
         <link rel="stylesheet" type="text/css" href="/web/tags.css"/>
@@ -32,6 +21,10 @@
         <script type="text/javascript" src="/web/hot-article.js"></script>
         <link rel="stylesheet" type="text/css" href="/web/notice.css"/>
         <script type="text/javascript" src="/web/notice.js"></script>
+
+        <link href="/highlight/styles/monokai_sublime.min.css" rel="stylesheet"/>
+        <script src="/highlight/highlight.pack.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
     </head>
     <body>
         <div th:fragment="content">
@@ -45,9 +38,10 @@
                             <a th:href="@{/(cateId=${article.cateId})}" class="fa fa-tasks" th:text="' '+${article.cateName}"></a>
                         </p>
                     </div>
-                    <div id="editormd-view">
+                    <div th:utext="${article.content}"></div>
+                    <!--<div id="editormd-view">
                         <textarea style="display:none;" th:text="${article.content}"></textarea>
-                    </div>
+                    </div>-->
                     <div class="row about-art">
                         <div class="col-md-6">
                             <a th:href="'/web/article/detail/'+${preArt.id}" th:if="${preArt ne null}" th:title="'上一篇：'+${preArt.title}"><i class="fa fa-caret-up" style="float:left;"></i> <span th:text="${preArt.title}"></span></a>
