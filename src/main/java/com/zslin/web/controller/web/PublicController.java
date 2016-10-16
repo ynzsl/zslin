@@ -58,6 +58,14 @@ public class PublicController {
         return artList;
     }
 
+    /** 获取最新发布的几条文章 */
+    @RequestMapping(value = "newArt", method = RequestMethod.GET)
+    public Page<Article> newArt(Integer length) {
+        length = (length ==null || length<=0)?10:length; //默认为10
+        Page<Article> artList = articleService.findAll(PageableTools.basicPage(0, length, "desc", "createDate"));
+        return artList;
+    }
+
     /** 获取公告信息 */
     @RequestMapping(value = "listNotice", method = RequestMethod.GET)
     public List<Notice> listNotice() {
