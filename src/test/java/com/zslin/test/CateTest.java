@@ -32,4 +32,9 @@ public class CateTest {
         List<CateDto> list = articleService.queryCates();
         System.out.println(list.size());
     }
+
+    @Test
+    public void test2() {
+        articleService.updateCommentCount(1,-1);
+    }
 }

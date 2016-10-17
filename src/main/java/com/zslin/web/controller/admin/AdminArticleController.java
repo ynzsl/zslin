@@ -98,6 +98,7 @@ public class AdminArticleController {
                 }
             }
             article.setReadCount(0);
+            article.setCommentCount(0);
             article.setCreateDate(new Date());
             addOrUpdateTags(article.getTags());
             articleService.save(article);

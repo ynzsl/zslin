@@ -2,6 +2,7 @@ package com.zslin.app.service;
 
 import com.zslin.app.dto.CateDto;
 import com.zslin.app.model.Article;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -22,4 +23,9 @@ public interface IArticleService extends JpaRepository<Article, Integer>, JpaSpe
     @Modifying
     @Transactional
     public void updateReadCount(Integer id);
+
+    @Query("UPDATE Article a SET a.commentCount=a.commentCount+?2 WHERE a.id=?1")
+    @Modifying
+    @Transactional
+    public void updateCommentCount(Integer id, Integer amount);
 }

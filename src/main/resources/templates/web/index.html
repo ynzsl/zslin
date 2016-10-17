@@ -24,7 +24,7 @@
     </head>
     <body>
         <div th:fragment="content">
-            <div class="col-md-9 col-sm-9 col-xs-9">
+            <div class="col-md-9 col-sm-12 col-xs-12">
                 <div th:each="obj : ${datas}" class="single-article my-border container-fluid">
                     <div class="col-md-9">
                         <a class="title-href" th:href="'/web/article/detail/'+${obj.id}" th:text="${obj.title}"></a>
@@ -35,9 +35,10 @@
                         <p th:utext="${obj.guide}" class="guide"></p>
                         <p class="info">
                             <span class="fa fa-tags article-tags" th:text="' '+${obj.tags}"></span>
+                            <span style="float:right" class="fa fa-comments-o"><a th:href="'/web/article/detail/'+${obj.id}+'#comment-div'" th:text="' '+${obj.commentCount}"></a></span>
                         </p>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3 hidden-sm hidden-xs">
                         <div th:if="${obj.picPath eq NULL || obj.picPath eq ''}" class="no-pic"></div>
                         <div th:unless="${obj.picPath eq NULL || obj.picPath eq ''}" class="has-pic">
                             <a th:href="'/web/article/detail/'+${obj.id}" th:title="${obj.title}" th:attr="picPath=${obj.picPath}"></a>
@@ -46,7 +47,7 @@
                 </div>
                 <div th:include="fragments/page :: pager" style="margin-top:18px; "></div>
             </div>
-            <div class="col-md-3 col-sm-3 col-xs-3">
+            <div class="col-md-3 col-sm-12 col-xs-12">
                 <div class="container-fluid show-notice"></div>
                 <div class="container-fluid show-cate"></div>
                 <div class="container-fluid new-article" showLength="10"></div>

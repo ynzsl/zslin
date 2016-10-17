@@ -20,6 +20,8 @@
         <script type="text/javascript" src="/web/tags.js"></script>
         <script type="text/javascript" src="/web/hot-article.js"></script>
         <script type="text/javascript" src="/web/new-article.js"></script>
+        <link rel="stylesheet" type="text/css" href="/web/comment.css"/>
+        <script type="text/javascript" src="/web/comment.js"></script>
         <link rel="stylesheet" type="text/css" href="/web/notice.css"/>
         <script type="text/javascript" src="/web/notice.js"></script>
 
@@ -29,13 +31,14 @@
     </head>
     <body>
         <div th:fragment="content">
-            <div class="col-md-9 col-sm-9 col-xs-9">
+            <div class="col-md-9 col-sm-12 col-xs-12">
                 <div class="my-border container-fluid">
                     <textarea style="display:none" name="mdContent" th:text="${article.mdContent}"></textarea>
                     <div class="page-header">
                         <h1 th:text="${article.title}"></h1>
                         <p class="info"><span th:text="${#dates.format(article.createDate, '&nbsp;yyyy-MM-dd')}" class="fa fa-clock-o"> </span>
                             &nbsp;<span class="fa fa-eye" th:text="'&nbsp;'+${article.readCount}"></span>
+                            &nbsp;<a href="#comment-div"><span class="fa fa-comments-o" th:text="'&nbsp;'+${article.commentCount}"></span></a>
                             <a th:href="@{/(cateId=${article.cateId})}" class="fa fa-tasks" th:text="' '+${article.cateName}"></a>
                         </p>
                     </div>
@@ -43,17 +46,59 @@
                     <!--<div id="editormd-view">
                         <textarea style="display:none;" th:text="${article.content}"></textarea>
                     </div>-->
-                    <div class="row about-art">
-                        <div class="col-md-6">
-                            <a th:href="'/web/article/detail/'+${preArt.id}" th:if="${preArt ne null}" th:title="'上一篇：'+${preArt.title}"><i class="fa fa-caret-up" style="float:left;"></i> <span th:text="${preArt.title}"></span></a>
-                        </div>
-                        <div class="col-md-6" style="text-align:right; padding-right:35px;">
-                            <a th:href="'/web/article/detail/'+${nextArt.id}" th:if="${nextArt ne null}"  th:title="'下一篇：'+${nextArt.title}"><span th:text="${nextArt.title}"></span><i class="fa fa-caret-down"></i></a>
+
+                    <div class="row container-fluid hidden-xs hidden-sm" th:if="${session.appConfig.showPay eq 1}">
+                        <div class="alert alert-danger">
+                            <p class="text-center" style="padding-bottom:15px;">如果您觉得我的文章不错，对您有所帮助，可以通过“微信支付”或“支付宝”对我加以鼓励！</p>
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12 col-xs-12 text-right">
+                                    <img src="http://img.zslin.com/wx-pay.png"/>
+                                    <p class="text-right" style="padding-right:75px;">微信扫一扫</p>
+                                </div>
+                                <div class="col-md-6 col-sm-12 col-xs-12 text-left">
+                                    <img src="http://img.zslin.com/zfb-pay.png"/>
+                                    <p class="text-left" style="padding-left:75px;">支付宝扫一扫</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <div class="row about-art" style="padding-top:40px; padding-bottom:40px;">
+                    <div class="col-md-6 col-sm-12 col-xs-12">
+                        <a th:href="'/web/article/detail/'+${preArt.id}" th:if="${preArt ne null}" th:title="'上一篇：'+${preArt.title}"><i class="fa fa-caret-up" style="float:left;"></i> <span th:text="'上一篇：'+${preArt.title}"></span></a>
+                    </div>
+                    <div class="col-md-6 col-sm-12 col-xs-12" style="text-align:right; padding-right:35px;">
+                        <a th:href="'/web/article/detail/'+${nextArt.id}" th:if="${nextArt ne null}"  th:title="'下一篇：'+${nextArt.title}"><span th:text="'下一篇：'+${nextArt.title}"></span><i class="fa fa-caret-down"></i></a>
+                    </div>
+                </div>
+
+                <div class="my-border container-fluid" style="padding-top:20px;">
+                    <div class="row container-fluid">
+                        <div class="panel panel-info">
+                            <div class="panel-heading"><i class="fa fa-commenting"></i> 文章点评<span style="float:right;" th:text="'共：'+${comments.totalElements}+' 条'"></span></div>
+                            <div class="panel-body">
+                                <div class="input-group input-group-lg">
+                                    <span class="input-group-addon">点评内容：</span>
+                                    <textarea class="form-control comment-content" placeholder="输入点评内容" style="height:80px; resize:none;"></textarea>
+                                    <span class="input-group-addon add-comment-btn" th:attr="artId=${article.id}, artTitle=${article.title}"><i class="fa fa-plus"></i> 提交点评</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div th:each="comment : ${comments}" id="comment-div">
+                            <div class="single-comment">
+                                <p style="width:90%;"><span class="time" th:text="${#dates.format(comment.createDate, 'MM-dd')}"></span>  <span th:text="'点评：'+${comment.content}">点评内容</span></p>
+                                <p th:if="${comment.reply ne NULL}" class="text-right reply-p">
+                                    <span class="time" th:text="${#dates.format(comment.replyDate, 'MM-dd')}"></span>  <span th:text="'回复：'+${comment.reply}">回复：回复内容</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
-            <div class="col-md-3 col-sm-3 col-xs-3">
+            <div class="col-md-3 col-sm-12 col-xs-12">
                 <div class="container-fluid show-notice"></div>
                 <div class="container-fluid show-cate"></div>
                 <div class="container-fluid new-article" showLength="12"></div>

@@ -16,6 +16,15 @@
 .hot-article ul li a i {
     font-size:12px; font-weight:normal;
 }
+
 .hot-article ul li a span {
+    margin-left:-8px;
+}
+
+
+.new-article ul li a i {
+    font-size:12px; font-weight:normal;
+}
+.new-article ul li a span {
     margin-left:-8px;
 }

@@ -36,7 +36,7 @@
     </head>
     <body>
         <div th:fragment="content">
-            <div class="col-md-9 col-sm-9 col-xs-9">
+            <div class="col-md-9 col-sm-12 col-xs-12">
                 <div class="my-border container-fluid">
                     <textarea style="display:none" name="mdContent" th:text="${about.mdContent}"></textarea>
                     <div class="page-header">
@@ -47,7 +47,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 col-sm-3 col-xs-3">
+            <div class="col-md-3 col-sm-12 col-xs-12">
                 <div class="container-fluid show-notice"></div>
                 <div class="container-fluid show-cate"></div>
                 <div class="container-fluid hot-article" showLength="10"></div>

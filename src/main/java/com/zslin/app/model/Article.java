@@ -55,6 +55,18 @@ public class Article {
     @Column(name = "pic_path")
     private String picPath;
 
+    /** 点评次数 */
+    @Column(name = "comment_count")
+    private Integer commentCount;
+
+    public Integer getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(Integer commentCount) {
+        this.commentCount = commentCount;
+    }
+
     public String getPicPath() {
         return picPath;
     }
