@@ -29,12 +29,18 @@ public class WebController {
 
     /** 网站首页 */
     @RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
-    public String index(Model model, Integer cateId, String tag, Integer page) {
-        Specification<Article> spe = null;
-        if(cateId!=null && cateId>0) {
+    public String index(Model model, Integer userId, Integer cateId, String tag, String condition, Integer page) {
+        Specifications<Article> spe = null;
+        if(userId!=null && userId>0) {
+            spe = Specifications.where(new BaseSpecification<>(new SearchCriteria("userId", "eq", userId)));
+        } else if(cateId!=null && cateId>0) {
             spe = Specifications.where(new BaseSpecification<>(new SearchCriteria("cateId", "eq", cateId)));
         } else if(tag!=null && !"".equals(tag.trim())) {
             spe = Specifications.where(new BaseSpecification<>(new SearchCriteria("tags", "like", tag)));
+        }
+        if(condition!=null && !"".equalsIgnoreCase(condition)) {
+            spe = Specifications.where(new BaseSpecification<>(new SearchCriteria("title", "like", condition)));
+            spe = spe.or(new BaseSpecification<>(new SearchCriteria("mdContent", "like", condition)));
         }
         Page<Article> datas = articleService.findAll(spe, PageableTools.basicPage(page, "desc", "createDate"));
         model.addAttribute("datas", datas);

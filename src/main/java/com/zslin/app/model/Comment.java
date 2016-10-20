@@ -35,6 +35,29 @@ public class Comment {
     @Column(name = "art_title")
     private String artTitle;
 
+    @Column(name = "user_id")
+    private Integer userId;
+
+    /** 用户昵称 */
+    @Column(name = "real_name")
+    private String realName;
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
     public String getArtTitle() {
         return artTitle;
     }

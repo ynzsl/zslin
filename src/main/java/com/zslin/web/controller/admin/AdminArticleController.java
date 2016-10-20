@@ -9,11 +9,14 @@ import com.zslin.app.service.ITagService;
 import com.zslin.app.tools.HtmlRegexpTools;
 import com.zslin.basic.auth.annotations.AdminAuth;
 import com.zslin.basic.auth.annotations.Token;
+import com.zslin.basic.auth.dto.AuthToken;
 import com.zslin.basic.auth.tools.TokenTools;
+import com.zslin.basic.exception.SystemException;
 import com.zslin.basic.tools.*;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -52,7 +55,12 @@ public class AdminArticleController {
     @AdminAuth(name = "文章列表", orderNum = 1, icon="icon-list")
     @RequestMapping(value="list", method= RequestMethod.GET)
     public String list(Model model, Integer page, HttpServletRequest request) {
-        Page<Article> datas = articleService.findAll(new ParamFilterTools<Article>().buildSpecification(model, request), PageableTools.basicPage(page));
+        AuthToken at = (AuthToken) request.getSession().getAttribute(AuthToken.SESSION_NAME);
+        Specifications<Article> spes = null;
+        if(at.getUser().getIsAdmin()==null || at.getUser().getIsAdmin()!=1){
+            spes = Specifications.where(new BaseSpecification<>(new SearchCriteria("userId", "eq", at.getUser().getId())));
+        }
+        Page<Article> datas = articleService.findAll(new ParamFilterTools<Article>().buildSpecification(model, request, spes), PageableTools.basicPage(page));
         model.addAttribute("datas", datas);
         return "admin/article/list";
     }
@@ -97,6 +105,13 @@ public class AdminArticleController {
                     }
                 }
             }
+
+            AuthToken at = (AuthToken) request.getSession().getAttribute(AuthToken.SESSION_NAME);
+            if(at!=null) {
+                article.setUserId(at.getUser().getId());
+                article.setRealName(at.getUser().getNickname());
+            }
+
             article.setReadCount(0);
             article.setCommentCount(0);
             article.setCreateDate(new Date());
@@ -123,7 +138,16 @@ public class AdminArticleController {
     @AdminAuth(name="修改文章", orderNum=3, type="2")
     @RequestMapping(value="update/{id}", method=RequestMethod.GET)
     public String update(Model model, @PathVariable Integer id, HttpServletRequest request) {
-        model.addAttribute("article", articleService.findOne(id));
+        Article article = articleService.findOne(id);
+
+        AuthToken at = (AuthToken) request.getSession().getAttribute(AuthToken.SESSION_NAME);
+        if(at!=null && (at.getUser().getIsAdmin() ==null || at.getUser().getIsAdmin()!=1)) {
+            if(article.getUserId()==null || article.getUserId()!=at.getUser().getId()) {
+                throw new SystemException("不是您管辖范围内的文章不可修改！");
+            }
+        }
+
+        model.addAttribute("article", article);
         model.addAttribute("cateList", categoryService.findAll());
         return "admin/article/update";
     }
@@ -133,7 +157,7 @@ public class AdminArticleController {
     public String update(Model model, @PathVariable Integer id, Article article, HttpServletRequest request, @RequestParam("file")MultipartFile[] files) {
         if(TokenTools.isNoRepeat(request)) {
             Article art = articleService.findOne(id);
-            MyBeanUtils.copyProperties(article, art, new String[]{"id","readCount", "createDate"});
+            MyBeanUtils.copyProperties(article, art, new String[]{"id","readCount", "userId", "realName", "createDate"});
             if(art.getGuide()==null || "".equals(art.getGuide().trim())) {
                 String guide = HtmlRegexpTools.filterHtml(art.getContent()).replace("[TOCM]","").replace("[TOC]", "");
                 if(guide.length()>200) {guide = guide.substring(0, 200) + "……";}

@@ -60,6 +60,16 @@
 						</div>
 					</div>
 				</div>
+
+				<div class="form-group form-group-lg">
+					<div class="input-group input-group-lg">
+						<div class="input-group-addon">显示广告：</div>
+						<div class="form-control">
+							<input type="radio" name="showAdd" value="1" id="add_1" th:checked="${appConfig.showAdd == 1}?'checked'"/><label for="add_1">显示</label>
+							<input type="radio" name="showAdd" value="0" id="add_0" th:checked="${appConfig.showAdd == 0}?'checked'"/><label for="add_0">隐藏</label>
+						</div>
+					</div>
+				</div>
 				<button type="submit" class="btn btn-primary submit-update-btn">保存设置</button>
 			</form>
 		</div>

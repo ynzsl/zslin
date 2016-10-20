@@ -2,8 +2,10 @@ package com.zslin.web.controller.web;
 
 import com.zslin.app.model.Article;
 import com.zslin.app.model.Comment;
+import com.zslin.app.model.Partner;
 import com.zslin.app.service.IArticleService;
 import com.zslin.app.service.ICommentService;
+import com.zslin.app.service.IPartnerService;
 import com.zslin.app.tools.MailTools;
 import com.zslin.basic.model.AppConfig;
 import com.zslin.basic.tools.*;
@@ -35,6 +37,9 @@ public class WebArticleController {
     private ICommentService commentService;
 
     @Autowired
+    private IPartnerService partnerService;
+
+    @Autowired
     private MailTools mailTools;
 
     /** 文章详情 */
@@ -50,6 +55,10 @@ public class WebArticleController {
         Page<Comment> comments = commentService.findAll(id, PageableTools.basicPage(0, 30));
         model.addAttribute("comments", comments);
 
+        if(article.getUserId()!=null && article.getUserId()>0) {
+            model.addAttribute("partner", partnerService.findByUserId(article.getUserId()));
+        }
+
         return "web/article/detail";
     }
 
@@ -62,31 +71,47 @@ public class WebArticleController {
         return artList.getTotalElements()>=1?artList.iterator().next():null;
     }
 
+    private boolean isNull(String field) {
+        return (field==null || "".equalsIgnoreCase(field.trim()));
+    }
+
     /** 点评文章 */
     @RequestMapping(value="addComment", method= RequestMethod.POST)
     public @ResponseBody String addComment(Integer artId, String artTitle, String content, HttpServletRequest request) {
+        if(artId==null || artId<=0 || isNull(artTitle) || isNull(content)) {return "params is error";}
         try {
+            Integer userId = articleService.queryUserId(artId);
             Comment comment = new Comment();
             comment.setIsShow(1);
             comment.setContent(content);
             comment.setArtId(artId);
             comment.setArtTitle(artTitle);
             comment.setCreateDate(new Date());
+            comment.setUserId(userId);
             commentService.save(comment);
 
             articleService.updateCommentCount(artId, 1); //修改文章的点评数量
 
+            StringBuffer sb = new StringBuffer();
+            sb.append("<p>文章标题：").append(artTitle).append("</p>")
+                    .append("<p>点评内容：").append(content).append("</p>")
+                    .append("<p style='text-align:right; width:100%;'>").append(NormalTools.curDate()).append("</p>")
+                    .append("<p style='text-align:right; width:100%;'>").append("知识林").append("</p>");
+
             AppConfig appConfig = (AppConfig) request.getSession().getAttribute("appConfig");
             //要有管理员邮箱才能发邮件
             if(appConfig!=null && appConfig.getAdminEmail()!=null && !"".equalsIgnoreCase(appConfig.getAdminEmail())) {
-                StringBuffer sb = new StringBuffer();
-                sb.append("<p>文章标题：").append(artTitle).append("</p>")
-                  .append("<p>点评内容：").append(content).append("</p>")
-                  .append("<p style='text-align:right; width:100%;'>").append(NormalTools.curDate()).append("</p>")
-                  .append("<p style='text-align:right; width:100%;'>").append(appConfig.getAppName()).append("</p>");
 
                 String [] emails = appConfig.getAdminEmail().split(",");
                 mailTools.send("新点评 - "+appConfig.getAppName(), sb.toString(), emails);
+            }
+
+            if(userId!=null) {
+                Partner partner = partnerService.findByUserId(userId);
+                if(partner!=null && partner.getEmail()!=null && !"".equalsIgnoreCase(partner.getEmail())) {
+                    String [] emails = partner.getEmail().split(",");
+                    mailTools.send("文章有新点评 - "+artTitle, sb.toString(), emails);
+                }
             }
 
             return "1";

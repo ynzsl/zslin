@@ -56,6 +56,7 @@ public class LoginController {
                     List<String> authList = menuService.listAuthByUser(u.getId());
                     authList.add("AdminController.index");
                     authList.add("AdminController.updatePwd");
+                    authList.add("AdminPartnerController.updateOwn");
                     at.setAuthList(authList);
                     request.getSession().setAttribute(AuthToken.SESSION_NAME, at);
 //					request.getSession().setAttribute("login_user", u);

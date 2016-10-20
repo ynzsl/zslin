@@ -16,7 +16,6 @@ public class MyBeanUtils extends BeanUtils {
 	
 	public static void copyProperties(Object source, Object target, String [] ignoreFields)
 			throws BeansException {
-//		BeanUtils.copyProperties(source, target, (String []) ArrayUtils.addAll(ignoreFields, getNullPropertyNames(source)));
 		BeanUtils.copyProperties(source, target, concat(ignoreFields, getNullPropertyNames(source)));
 	}
 

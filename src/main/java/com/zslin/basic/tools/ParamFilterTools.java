@@ -16,9 +16,9 @@ public class ParamFilterTools<T> {
     private static final String PARAM_PRE = "filter_";
     private static final String PARAM_SPE = "-";
 
-    public Specifications<T> buildSpecification(Model model, HttpServletRequest request) {
+    public Specifications<T> buildSpecification(Model model, HttpServletRequest request, Specifications result) {
         Map<String, Object> args = new HashMap<>();
-        Specifications<T> result = null;
+//        Specifications<T> result = null;
         Map<String, String[]> paramMap = request.getParameterMap();
         for(String key : paramMap.keySet()) {
             //这个参数是需要进行过虑的
@@ -44,5 +44,9 @@ public class ParamFilterTools<T> {
         }
         model.addAttribute("args", args);
         return result;
+    }
+
+    public Specifications<T> buildSpecification(Model model, HttpServletRequest request) {
+        return buildSpecification(model, request, null);
     }
 }

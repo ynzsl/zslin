@@ -21,7 +21,7 @@
                 </h1>
             </div><!-- /.page-header -->
 
-            <div class="alert alert-block alert-success">
+            <div class="alert alert-block alert-success" th:if="${session.LOGIN_USER ne NULL}">
                 <button type="button" class="close" data-dismiss="alert">
                     <i class="icon-remove"></i>
                 </button>

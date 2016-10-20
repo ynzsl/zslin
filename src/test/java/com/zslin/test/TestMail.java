@@ -1,5 +1,6 @@
 package com.zslin.test;
 
+import com.zslin.app.tools.MailTools;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +35,17 @@ public class TestMail {
         message.setText("测试，估计是内容");
 
         mailSender.send(message);
+    }
+
+    @Autowired
+    private MailTools mailTools;
+
+    @Test
+    public void testMail() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("<p>asdfasgasdf硒鼓阿斯蒂芬 基本硒鼓</p>");
+        sb.append("<p style='color:#F00'>asdfasgasdf硒鼓阿斯蒂芬 基本硒鼓</p>");
+        sb.append("<p style='text-align:right'>asdfasgasdf硒鼓阿斯蒂芬 基本硒鼓</p>");
+        mailTools.send("右茵苦", sb.toString(), "398986099@qq.com");
     }
 }

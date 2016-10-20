@@ -59,6 +59,30 @@ public class Article {
     @Column(name = "comment_count")
     private Integer commentCount;
 
+    /** 关联用户Id */
+    @Column(name = "user_id")
+    private Integer userId;
+
+    /** 关联用户昵称 */
+    @Column(name = "real_name")
+    private String realName;
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
     public Integer getCommentCount() {
         return commentCount;
     }

@@ -37,4 +37,9 @@ public class CateTest {
     public void test2() {
         articleService.updateCommentCount(1,-1);
     }
+
+    @Test
+    public void test3() {
+        System.out.println(articleService.queryReadCount());
+    }
 }

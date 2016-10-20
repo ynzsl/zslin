@@ -9,7 +9,7 @@
     </head>
     <body>
         <div th:fragment="content">
-            <ul class="nav nav-list">
+            <ul class="nav nav-list" th:if="${session.LOGIN_USER ne NULL}">
                 <div th:each="ppm, menuVs:${session.LOGIN_USER.authMenu}" th:remove="tag">
                     <li th:id="'menu_'+${ppm.pm.id}" th:class="'menu-level-'+${menuVs.count}">
                         <a href="#" class="dropdown-toggle">

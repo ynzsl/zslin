@@ -30,6 +30,10 @@
         <link rel="stylesheet" href="/assets/css/family.css" />
         <link rel="stylesheet" href="/web/web-model.css" />
 
+        <link rel="stylesheet" href="/web/search.css" />
+        <script type="text/javascript" src="/web/search.js"></script>
+        <script type="text/javascript" src="/web/web-bottom.js"></script>
+
         <script type="text/javascript">
             $(function() {
             });
@@ -65,12 +69,20 @@
 
         <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"1","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"0","bdPos":"right","bdTop":"152.5"},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
         <div class="container-fluid" id="model-top-div">
-            <a href="/" class="index-href"><img src="/web/imgs/zslin-logo-3.png"/></a>
-            <ul class="model-top-ul">
-                <li><a href="/">知识林首页</a></li>
-                <!--<li><a href="">最新文章</a></li>-->
-                <li><a href="/about">关于我</a></li>
-            </ul>
+            <div class="col-md-9 col-sm-12 col-xs-12">
+                <a href="/" class="index-href"><img src="/web/imgs/zslin-logo-3.png"/></a>
+                <ul class="model-top-ul">
+                    <li><a href="/">首页</a></li>
+                    <!--<li><a href="">最新文章</a></li>-->
+                    <li><a href="/about">关于我</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 col-sm-12 col-xs-12 text-left model-search-div">
+                <div class="input-group input-group-lg">
+                    <input type="text" class="form-control" placeholder="搜索"/>
+                    <span class="input-group-addon search-btn"><i class="fa fa-search"></i></span>
+                </div>
+            </div>
         </div>
 
         <div class="container-fluid" style="padding-bottom:75px;">
@@ -79,7 +91,7 @@
         </div><!-- /.main-container -->
 
         <div class="navbar-fixed-bottom model-bottom-div text-center">
-            &copy; 2016&nbsp;-&nbsp;<a href="http://www.zslin.com">知识林</a>
+            &copy; 2016&nbsp;-&nbsp;<a href="http://www.zslin.com">知识林</a>，<span title="文章阅读次数" class="read-count"><i class="fa fa-eye"></i> <b>6</b></span>
         </div>
     </body>
 </html>

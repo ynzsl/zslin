@@ -1,7 +1,4 @@
 $(function() {
-
-    $("#my-editormd").find("textarea").text($("textarea[name='mdContent']").text());
-
     var myEditormd = editormd("my-editormd", {
         width           : "100%",
         dialogMaskBgColor : "#000",
@@ -25,11 +22,13 @@ $(function() {
         var content = myEditormd.getHTML();
         var mdCon = myEditormd.getMarkdown();
         if(content==null || $.trim(content)=='') {
-            showDialog("请认真输入内容！"); return false;
+            showDialog("请认真输入备注信息！"); return false;
         }
 
-        $("textarea[name='content']").text(content);
-        $("textarea[name='mdContent']").text(mdCon);
+//        alert(myEditormd.getValue());
+
+        $("textarea[name='remark']").text(content);
+        $("textarea[name='mdRemark']").text(mdCon);
 
         return true;
     });

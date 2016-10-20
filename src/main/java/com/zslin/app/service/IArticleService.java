@@ -28,4 +28,13 @@ public interface IArticleService extends JpaRepository<Article, Integer>, JpaSpe
     @Modifying
     @Transactional
     public void updateCommentCount(Integer id, Integer amount);
+
+    @Query("SELECT COUNT(a.id) FROM Article a WHERE a.isShow=1")
+    Long queryCount();
+
+    @Query("SELECT SUM(a.readCount) FROM Article a")
+    Long queryReadCount();
+
+    @Query("SELECT a.userId FROM Article a WHERE a.id=?1")
+    Integer queryUserId(Integer id);
 }

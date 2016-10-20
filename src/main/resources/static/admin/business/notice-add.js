@@ -14,7 +14,8 @@ $(function() {
         emoji           : true,
         taskList        : true,
         flowChart       : true,
-        sequenceDiagram : true
+        sequenceDiagram : true,
+        toolbar         : false
     });
 
     $("#dataForm").submit(function() {

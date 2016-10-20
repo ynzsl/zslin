@@ -73,4 +73,16 @@ public class PublicController {
         List<Notice> res = noticeService.findAll(pars, SortTools.basicSort("asc", "orderNo"));
         return res;
     }
+
+    /** 显示的文章条数 */
+    @RequestMapping(value = "articleCount", method = RequestMethod.GET)
+    public Long articleCount() {
+        return articleService.queryCount();
+    }
+
+    /** 文章阅读总数 */
+    @RequestMapping(value = "articleReadCount", method = RequestMethod.GET)
+    public Long articleReadCount() {
+        return articleService.queryReadCount();
+    }
 }

@@ -16,7 +16,8 @@ $(function() {
         emoji           : true,
         taskList        : true,
         flowChart       : true,
-        sequenceDiagram : true
+        sequenceDiagram : true,
+        toolbar         : false
     });
 
     $(".cate-href").click(function() {

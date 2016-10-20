@@ -74,7 +74,7 @@
                     <li class="light-blue">
                         <a data-toggle="dropdown" href="javascript:" class="dropdown-toggle">
                             <i class="icon-user icon-2x nav-user-photo"></i>
-                            <span class="user-info">
+                            <span class="user-info" th:if="${session.LOGIN_USER ne NULL}">
                                 <small style="padding-bottom:5px;">欢迎登陆：</small>
                                 <span th:text="${session.LOGIN_USER.user.nickname}" th:remove="tag">用户名称</span>
                             </span>
@@ -89,13 +89,19 @@
                             </li>
                             <li>
                                 <a href="/admin">
-                                    <i class="icon-home">后台首页</i>
+                                    <i class="icon-home"> 后台首页</i>
                                 </a>
                             </li>
 
                             <li>
                                 <a href="/admin/updatePwd">
-                                    <i class="icon-edit">修改个人信息</i>
+                                    <i class="icon-edit"> 修改用户信息</i>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="/admin/partner/updateOwn">
+                                    <i class="fa fa-pencil"> 修改个人信息</i>
                                 </a>
                             </li>
 
@@ -157,7 +163,7 @@
 <script src="/assets/js/ace.min.js"></script>
 
 <input type="hidden" id="ctx" value=""/>
-<div id="userAuthHref" style="display: none;">
+<div id="userAuthHref" style="display: none;" th:if="${session.LOGIN_USER ne NULL}">
     <div th:each="authTmp : ${session.LOGIN_USER.authList}" th:remove="tag">
         <span th:text="'('+${authTmp}+')'" th:remove="tag"></span>
     </div>

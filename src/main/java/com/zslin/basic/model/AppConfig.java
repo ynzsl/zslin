@@ -42,9 +42,21 @@ public class AppConfig {
 	@Column(name = "show_pay")
 	private Integer showPay;
 
+	/** 显示广告 */
+	@Column(name = "show_add")
+	private Integer showAdd;
+
 	/** 管理员邮箱 */
 	@Column(name = "admin_email")
 	private String adminEmail;
+
+	public Integer getShowAdd() {
+		return showAdd;
+	}
+
+	public void setShowAdd(Integer showAdd) {
+		this.showAdd = showAdd;
+	}
 
 	public String getAdminEmail() {
 		return adminEmail;

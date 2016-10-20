@@ -5,11 +5,16 @@ import com.zslin.app.service.IArticleService;
 import com.zslin.app.service.ICommentService;
 import com.zslin.basic.auth.annotations.AdminAuth;
 import com.zslin.basic.auth.annotations.Token;
+import com.zslin.basic.auth.dto.AuthToken;
 import com.zslin.basic.auth.tools.TokenTools;
+import com.zslin.basic.exception.SystemException;
+import com.zslin.basic.tools.BaseSpecification;
 import com.zslin.basic.tools.PageableTools;
 import com.zslin.basic.tools.ParamFilterTools;
+import com.zslin.basic.tools.SearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,7 +43,13 @@ public class AdminCommentController {
     @AdminAuth(name = "点评列表", orderNum = 1, icon="icon-list")
     @RequestMapping(value="list", method= RequestMethod.GET)
     public String list(Model model, Integer page, HttpServletRequest request) {
-        Page<Comment> datas = commentService.findAll(new ParamFilterTools<Comment>().buildSpecification(model, request), PageableTools.basicPage(page));
+        AuthToken at = (AuthToken) request.getSession().getAttribute(AuthToken.SESSION_NAME);
+        Specifications<Comment> spes = null;
+        if(at.getUser().getIsAdmin()==null || at.getUser().getIsAdmin()!=1){
+            spes = Specifications.where(new BaseSpecification<>(new SearchCriteria("userId", "eq", at.getUser().getId())));
+        }
+
+        Page<Comment> datas = commentService.findAll(new ParamFilterTools<Comment>().buildSpecification(model, request, spes), PageableTools.basicPage(page));
         model.addAttribute("datas", datas);
         return "admin/comment/list";
     }
@@ -47,7 +58,17 @@ public class AdminCommentController {
     @AdminAuth(name="回复点评", orderNum=3, type="2")
     @RequestMapping(value="update/{id}", method=RequestMethod.GET)
     public String update(Model model, @PathVariable Integer id, HttpServletRequest request) {
-        model.addAttribute("comment", commentService.findOne(id));
+
+        Comment comment = commentService.findOne(id);
+
+        AuthToken at = (AuthToken) request.getSession().getAttribute(AuthToken.SESSION_NAME);
+        if(at!=null && (at.getUser().getIsAdmin() ==null || at.getUser().getIsAdmin()!=1)) {
+            if(comment.getUserId()==null || comment.getUserId()!=at.getUser().getId()) {
+                throw new SystemException("不是您管辖范围内的点评不可修改！");
+            }
+        }
+
+        model.addAttribute("comment", comment);
         return "admin/comment/update";
     }
 
