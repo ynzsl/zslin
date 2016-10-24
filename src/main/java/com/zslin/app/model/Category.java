@@ -17,6 +17,7 @@ public class Category {
     private String name;
 
     /** 描述 */
+    @Lob
     private String remark;
 
     /** 图标，采用bootstrap或fontawesome.io */

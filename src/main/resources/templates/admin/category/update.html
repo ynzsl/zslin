@@ -32,7 +32,7 @@
 		<div class="form-group form-group-lg">
 			<div class="input-group">
 				<div class="input-group-addon">分类描述：</div>
-				<input name="remark" type="text" class="form-control" th:value="${category.remark}" placeholder="分类描述" />
+				<textarea name="remark" type="text" class="form-control" th:text="${category.remark}" style="height:80px;" placeholder="分类描述"></textarea>
 			</div>
 		</div>
 		<div class="form-group form-group-lg">

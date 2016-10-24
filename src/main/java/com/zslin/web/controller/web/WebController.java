@@ -3,6 +3,7 @@ package com.zslin.web.controller.web;
 import com.zslin.app.model.Article;
 import com.zslin.app.service.IAboutService;
 import com.zslin.app.service.IArticleService;
+import com.zslin.app.service.ICategoryService;
 import com.zslin.basic.tools.BaseSpecification;
 import com.zslin.basic.tools.PageableTools;
 import com.zslin.basic.tools.SearchCriteria;
@@ -27,6 +28,9 @@ public class WebController {
     @Autowired
     private IAboutService aboutService;
 
+    @Autowired
+    private ICategoryService categoryService;
+
     /** 网站首页 */
     @RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
     public String index(Model model, Integer userId, Integer cateId, String tag, String condition, Integer page) {
@@ -35,6 +39,7 @@ public class WebController {
             spe = Specifications.where(new BaseSpecification<>(new SearchCriteria("userId", "eq", userId)));
         } else if(cateId!=null && cateId>0) {
             spe = Specifications.where(new BaseSpecification<>(new SearchCriteria("cateId", "eq", cateId)));
+            model.addAttribute("category", categoryService.findOne(cateId)); //获取当前分类
         } else if(tag!=null && !"".equals(tag.trim())) {
             spe = Specifications.where(new BaseSpecification<>(new SearchCriteria("tags", "like", tag)));
         }

@@ -2,12 +2,10 @@ package com.zslin.web.controller.web;
 
 import com.zslin.app.dto.CateDto;
 import com.zslin.app.model.Article;
+import com.zslin.app.model.Category;
 import com.zslin.app.model.Notice;
 import com.zslin.app.model.Tag;
-import com.zslin.app.service.IAboutService;
-import com.zslin.app.service.IArticleService;
-import com.zslin.app.service.INoticeService;
-import com.zslin.app.service.ITagService;
+import com.zslin.app.service.*;
 import com.zslin.basic.tools.BaseSpecification;
 import com.zslin.basic.tools.PageableTools;
 import com.zslin.basic.tools.SearchCriteria;
@@ -37,6 +35,9 @@ public class PublicController {
 
     @Autowired
     private INoticeService noticeService;
+
+    @Autowired
+    private ICategoryService categoryService;
 
     /** 获取标签 */
     @RequestMapping(value = "listTags", method = RequestMethod.GET)

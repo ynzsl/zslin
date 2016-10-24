@@ -73,7 +73,7 @@
                 <a href="/" class="index-href"><img src="/web/imgs/zslin-logo-3.png"/></a>
                 <ul class="model-top-ul">
                     <li><a href="/">首页</a></li>
-                    <!--<li><a href="">最新文章</a></li>-->
+                    <li th:each="navCate : ${session.navCateList}"><a th:href="'/?cateId='+${navCate.id}" th:text="${navCate.name}">分类名称</a></li>
                     <li><a href="/about">关于我</a></li>
                 </ul>
             </div>
@@ -91,7 +91,7 @@
         </div><!-- /.main-container -->
 
         <div class="navbar-fixed-bottom model-bottom-div text-center">
-            &copy; 2016&nbsp;-&nbsp;<a href="http://www.zslin.com">知识林</a>，<span title="文章阅读次数" class="read-count"><i class="fa fa-eye"></i> <b>6</b></span>
+            &copy; 2016&nbsp;-&nbsp;<a href="http://www.zslin.com">知识林</a>，<span title="文章阅读次数" class="read-count"><i class="fa fa-eye"></i> <b></b></span>
         </div>
     </body>
 </html>
