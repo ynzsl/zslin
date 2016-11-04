@@ -67,6 +67,30 @@ public class Article {
     @Column(name = "real_name")
     private String realName;
 
+    /** 视频地址 */
+    @Column(name = "video_url")
+    private String videoUrl;
+
+    /** 视频高度，可以是百分比，也可以是px */
+    @Column(name = "video_height")
+    private String videoHeight;
+
+    public String getVideoHeight() {
+        return videoHeight;
+    }
+
+    public void setVideoHeight(String videoHeight) {
+        this.videoHeight = videoHeight;
+    }
+
+    public String getVideoUrl() {
+        return videoUrl;
+    }
+
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
+    }
+
     public Integer getUserId() {
         return userId;
     }

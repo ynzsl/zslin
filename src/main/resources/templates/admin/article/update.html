@@ -37,6 +37,15 @@
 
 		<div class="form-group form-group-lg">
 			<div class="input-group">
+				<div class="input-group-addon">视频地址：</div>
+				<input name="videoUrl" type="text" class="form-control" th:value="${article.videoUrl}" placeholder="视频地址，支持MP4（可以不输）" />
+				<div class="input-group-addon">视频高度：</div>
+				<input name="videoHeight" type="text" class="form-control" th:value="${article.videoHeight}" placeholder="视频高度，支持百分比和px（可以不输）" />
+			</div>
+		</div>
+
+		<div class="form-group form-group-lg">
+			<div class="input-group">
 				<div class="input-group-addon">文章图片：</div>
 				<div class="" style="border:1px #ddd solid; padding:5px;">
 					<a  th:if="${article.picPath ne NULL and article.picPath ne ''}" th:href="${article.picPath}" target="_blank"><img th:src="${article.picPath}" style="width:100px;"/></a>
