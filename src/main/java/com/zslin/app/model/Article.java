@@ -75,6 +75,17 @@ public class Article {
     @Column(name = "video_height")
     private String videoHeight;
 
+    /** 是否推荐 */
+    private Integer recommend;
+
+    public Integer getRecommend() {
+        return recommend;
+    }
+
+    public void setRecommend(Integer recommend) {
+        this.recommend = recommend;
+    }
+
     public String getVideoHeight() {
         return videoHeight;
     }

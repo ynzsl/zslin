@@ -33,19 +33,6 @@
         <link rel="stylesheet" href="/web/search.css" />
         <script type="text/javascript" src="/web/search.js"></script>
         <script type="text/javascript" src="/web/web-bottom.js"></script>
-
-        <script type="text/javascript">
-            $(function() {
-            });
-        </script>
-        <style>
-            * {
-                font-size:18px;
-            }
-            pre * {
-                font-size:16px;
-            }
-        </style>
     </head>
     <body>
         <script>
@@ -72,9 +59,9 @@
             <div class="col-md-9 col-sm-12 col-xs-12">
                 <a href="/" class="index-href"><img src="/web/imgs/zslin-logo-3.png"/></a>
                 <ul class="model-top-ul">
-                    <li><a href="/">首页</a></li>
-                    <li th:each="navCate : ${session.navCateList}"><a th:href="'/?cateId='+${navCate.id}" th:text="${navCate.name}">分类名称</a></li>
-                    <!--<li><a href="/about">关于我</a></li>-->
+                    <li><a href="/"><i class="fa fa-home"></i> Home</a></li>
+                    <li th:each="navCate : ${session.navCateList}"><a th:href="'/?cateId='+${navCate.id}"><i th:class="${navCate.icon}"></i> <span th:text="${navCate.name}"></span></a></li>
+                    <li><a href="/about"><i class="fa fa-at"></i> About</a></li>
                 </ul>
             </div>
             <div class="col-md-3 col-sm-12 col-xs-12 text-left model-search-div">

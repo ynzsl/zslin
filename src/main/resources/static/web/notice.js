@@ -1,7 +1,8 @@
 $(function() {
     $(".show-notice").each(function() {
         var thisObj = $(this);
-        var html = '<h2>公告</h2>';
+//        var html = '<h2>公告</h2>';
+        var html = '';
         $.get("/public/listNotice",{}, function(res) {
             for(var i=0; i<res.length; i++) {
                 var obj = res[i];

@@ -42,6 +42,16 @@ public class Comment {
     @Column(name = "real_name")
     private String realName;
 
+    private String ip;
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
     public String getRealName() {
         return realName;
     }

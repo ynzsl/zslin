@@ -23,6 +23,7 @@
         <script type="text/javascript" src="/web/article.js"></script>
         <link rel="stylesheet" type="text/css" href="/web/comment.css"/>
         <script type="text/javascript" src="/web/comment.js"></script>
+        <script type="text/javascript" src="/web/new-comment.js"></script>
         <link rel="stylesheet" type="text/css" href="/web/notice.css"/>
         <script type="text/javascript" src="/web/notice.js"></script>
 
@@ -32,10 +33,11 @@
         <script src="/flowplayer/flowplayer-3.2.13.min.js"></script>
 
         <script>hljs.initHighlightingOnLoad();</script>
+
     </head>
     <body>
         <div th:fragment="content">
-            <div class="col-md-9 col-sm-12 col-xs-12">
+            <div class="col-md-9 col-sm-12 col-xs-12" style="padding-top:15px;">
                 <div class="text-center hidden-sm hidden-xs" th:if="${session.appConfig.showAdd eq 1}">
                     <script type="text/javascript">
                         var sogou_ad_id=706431;
@@ -137,14 +139,14 @@
             <div class="col-md-3 col-sm-12 col-xs-12">
                 <div class="container-fluid show-notice"></div>
                 <div class="container-fluid show-cate"></div>
-                <div class="container-fluid new-article" showLength="15"></div>
-                <div class="container-fluid hot-article" showLength="15"></div>
+                <div class="container-fluid hot-article" showLength="12"></div>
+                <div class="container-fluid new-article" showLength="12"></div>
                 <div class="container-fluid show-tags"></div>
+                <div class="container-fluid new-comment" showLength="15"></div>
             </div>
             <div th:unless="${article.picPath eq NULL || article.picPath eq ''}" style="height:0px; overflow:hidden">
                 <img th:src="${article.picPath}"/>
             </div>
-
         </div>
     </body>
 </html>

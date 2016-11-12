@@ -1,12 +1,15 @@
 package com.zslin.web.controller.web;
 
 import com.zslin.app.model.Article;
+import com.zslin.app.model.TopPic;
 import com.zslin.app.service.IAboutService;
 import com.zslin.app.service.IArticleService;
 import com.zslin.app.service.ICategoryService;
+import com.zslin.app.service.ITopPicService;
 import com.zslin.basic.tools.BaseSpecification;
 import com.zslin.basic.tools.PageableTools;
 import com.zslin.basic.tools.SearchCriteria;
+import com.zslin.basic.tools.SortTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
@@ -15,6 +18,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.List;
 
 /**
  * Created by zsl-pc on 2016/9/28.
@@ -30,6 +35,9 @@ public class WebController {
 
     @Autowired
     private ICategoryService categoryService;
+
+    @Autowired
+    private ITopPicService topPicService;
 
     /** 网站首页 */
     @RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
@@ -47,6 +55,10 @@ public class WebController {
             spe = Specifications.where(new BaseSpecification<>(new SearchCriteria("title", "like", condition)));
             spe = spe.or(new BaseSpecification<>(new SearchCriteria("mdContent", "like", condition)));
         }
+
+        List<TopPic> pics = topPicService.findAll(Specifications.where(new BaseSpecification<>(new SearchCriteria("status", "eq", "1"))), SortTools.basicSort("asc", "orderNo"));
+        model.addAttribute("topPics", pics);
+
         Page<Article> datas = articleService.findAll(spe, PageableTools.basicPage(page, "desc", "createDate"));
         model.addAttribute("datas", datas);
         return "web/index";

@@ -88,6 +88,7 @@ public class WebArticleController {
             comment.setArtTitle(artTitle);
             comment.setCreateDate(new Date());
             comment.setUserId(userId);
+            comment.setIp(request.getRemoteAddr());
             commentService.save(comment);
 
             articleService.updateCommentCount(artId, 1); //修改文章的点评数量

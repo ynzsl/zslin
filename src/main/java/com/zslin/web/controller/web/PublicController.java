@@ -1,10 +1,7 @@
 package com.zslin.web.controller.web;
 
 import com.zslin.app.dto.CateDto;
-import com.zslin.app.model.Article;
-import com.zslin.app.model.Category;
-import com.zslin.app.model.Notice;
-import com.zslin.app.model.Tag;
+import com.zslin.app.model.*;
 import com.zslin.app.service.*;
 import com.zslin.basic.tools.BaseSpecification;
 import com.zslin.basic.tools.PageableTools;
@@ -38,6 +35,9 @@ public class PublicController {
 
     @Autowired
     private ICategoryService categoryService;
+
+    @Autowired
+    public ICommentService commentService;
 
     /** 获取标签 */
     @RequestMapping(value = "listTags", method = RequestMethod.GET)
@@ -85,5 +85,13 @@ public class PublicController {
     @RequestMapping(value = "articleReadCount", method = RequestMethod.GET)
     public Long articleReadCount() {
         return articleService.queryReadCount();
+    }
+
+    /** 获取最新的几条点评 */
+    @RequestMapping(value = "newComment", method = RequestMethod.GET)
+    public Page<Comment> newComment(Integer length) {
+        length = (length ==null || length<=0)?10:length; //默认为10
+        Page<Comment> commentList = commentService.findAll(PageableTools.basicPage(0, length, "desc", "createDate"));
+        return commentList;
     }
 }
