@@ -39,7 +39,7 @@
                     <tr th:each="obj : ${datas}">
                         <td><a th:href="'/web/article/detail/'+${obj.artId}" th:text="${obj.artTitle}" target="_blank"></a></td>
                         <td th:text="${obj.content}">内容</td>
-                        <td th:text="${#dates.format(obj.createDate, 'yyyy-MM-dd HH:mm:ss')}">日期</td>
+                        <td><p th:text="${obj.ip}"></p><p th:text="${#dates.format(obj.createDate, 'yyyy-MM-dd HH:mm:ss')}"></p></td>
                         <td>
                             <p th:if="${obj.reply eq NULL }">未回复</p>
                             <p th:unless="${obj.reply eq NULL}" th:text="${obj.reply}"></p>
