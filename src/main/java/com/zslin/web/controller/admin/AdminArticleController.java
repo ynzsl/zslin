@@ -7,12 +7,14 @@ import com.zslin.app.service.IArticleService;
 import com.zslin.app.service.ICategoryService;
 import com.zslin.app.service.ITagService;
 import com.zslin.app.tools.HtmlRegexpTools;
+import com.zslin.app.tools.HttpRequest;
 import com.zslin.basic.auth.annotations.AdminAuth;
 import com.zslin.basic.auth.annotations.Token;
 import com.zslin.basic.auth.dto.AuthToken;
 import com.zslin.basic.auth.tools.TokenTools;
 import com.zslin.basic.exception.SystemException;
 import com.zslin.basic.tools.*;
+import com.zslin.weixin.tools.JsonTools;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -202,6 +204,24 @@ public class AdminArticleController {
         try {
             articleService.delete(id);
             return "1";
+        } catch (Exception e) {
+            return "0";
+        }
+    }
+
+    @AdminAuth(name="推送文章", orderNum=5, type="2")
+    @RequestMapping(value="send2baidu/{id}", method=RequestMethod.POST)
+    public @ResponseBody
+    String send2baidu(@PathVariable Integer id) {
+        try {
+            String url = "http://www.zslin.com/web/article/detail/"+id;
+            String res = HttpRequest.sendPost(url);
+            String code = JsonTools.getJsonParam(res, "success");
+            if("1".equalsIgnoreCase(code)) {
+                return "1";
+            } else {
+                return "报错了！";
+            }
         } catch (Exception e) {
             return "0";
         }

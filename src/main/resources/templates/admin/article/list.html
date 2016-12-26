@@ -54,6 +54,9 @@
 
                         <td>
                             <div class="action-buttons">
+                                <a class="delete-obj-href blue auth"  sn="AdminArticleController.send2baidu" th:title="'确定将文章【'+${obj.title}+'】推送到百度吗？'" th:href="'/admin/article/send2baidu/'+${obj.id}">
+                                    <i class="fa fa-send"></i>
+                                </a>
                                 <a class="green auth" title="修改" sn="AdminArticleController.update" th:href="'/admin/article/update/'+${obj.id}">
                                     <i class="icon-pencil bigger-130"></i>
                                 </a>
